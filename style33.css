@@ -1,0 +1,12 @@
+#caixa{
+    display: block;
+    position: absolute;
+    padding: 20px 20px;
+    border-radius: 20px;
+    border: 2px solid black;
+    left: 30%;
+    top:15%;
+    background-color: grey;
+    width: 35%;
+}
+

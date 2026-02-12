@@ -1,0 +1,92 @@
+body{
+
+
+    background-image: url("./eletrico.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+    
+    
+    
+}
+
+#morada{
+    background-color: aliceblue;
+    padding: 10px 5px;
+    position: absolute;
+    display: block;
+    top: 35%;
+    left:5%;
+    width: 30%;
+    border-radius: 5px;
+    border: 2px solid black;
+
+}
+
+#resultados{
+    position: absolute;
+    display: block;
+    left: 35%;
+    top: 35%;
+    width: 50%;
+}
+
+#cabecalho{
+    position: relative;
+    display: block;
+    padding: 20px 20px;
+    background-color: grey;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+#titulos{
+    border-radius: 5px;
+}
+
+
+
+#alerts{
+    top: 10%;
+    right: 10%;
+    position: absolute;
+    display: block;
+    border-radius: 10px;
+    border: 2px solid black;
+    background-color: red;
+    padding: 10px 10px;
+    width: 20%;
+    z-index: 1;
+}
+
+#alertssuccess{
+    top: 10%;
+    right: 10%;
+    position: absolute;
+    display: block;
+    border-radius: 10px;
+    border: 2px solid black;
+    background-color:green;
+    padding: 10px 10px;
+    width: 20%;
+    z-index: 1;
+}
+
+#logout{
+
+    position: absolute;
+    display: block;
+
+    top: 15px;
+    right: 10px;
+}
+
+
+#nomeutilizadores{
+    display: block;
+    position: absolute;
+    right: 8%;
+    color: white;
+    border: 2px solid grey;
+}
