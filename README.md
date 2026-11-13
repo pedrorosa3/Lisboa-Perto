@@ -11,6 +11,7 @@
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
 ![Leaflet](https://img.shields.io/badge/Leaflet-199900?style=for-the-badge&logo=leaflet&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
 </div>
 
@@ -38,9 +39,9 @@ O **Lisboa+Perto** é uma aplicação web que permite aos cidadãos **reportar p
 - **Registo e login** de utilizadores.
 - **Reportar ocorrências** com categoria, subcategoria, descrição, fotografia e localização marcada num **mapa** (Leaflet + OpenStreetMap).
 - **Pesquisa** de ocorrências por rua, localidade, categoria ou estado.
-- **Acompanhamento do estado** de cada ocorrência (Registada → Aberta → Resolvida).
+- **Acompanhamento do estado** de cada ocorrência (Por Resolver → A ser Resolvido → Resolvido).
 - **Chat** com os funcionários da CML sobre uma ocorrência específica.
-- **Feedback** sobre as ocorrências resolvidas.
+- **Feedback** sobre as ocorrências, com avaliação de 1 a 5.
 
 ### 🏛️ Funcionários da CML (*back-office*)
 - **Painel de gestão** para ver, filtrar e alterar o estado das ocorrências.
@@ -55,6 +56,7 @@ O **Lisboa+Perto** é uma aplicação web que permite aos cidadãos **reportar p
 | Mapas | Leaflet + OpenStreetMap |
 | Backend | PHP (extensão `mysqli`) |
 | Base de dados | MySQL / MariaDB |
+| Infraestrutura | Docker, Docker Compose |
 
 ## 📁 Estrutura do projeto
 
@@ -69,19 +71,60 @@ Lisboa-Perto/
 ├── feedback.php              # Feedback das ocorrências
 ├── cml.php / cmlpesquisa.php # Back-office da CML
 ├── editocorrencia.php        # Edição de ocorrências
-├── abreconexao.php           # Ligação à base de dados (lê o .env)
+├── abreconexao.php           # Ligação à BD (variáveis de ambiente ou .env)
 ├── .env.example              # Modelo das variáveis de ambiente
 ├── BDASW18.sql               # Esquema da base de dados
+├── Dockerfile                # Imagem PHP + Apache
+├── docker-compose.yml        # App + MySQL + phpMyAdmin
+├── docker/                   # Dados iniciais (seed.sql) e php.ini
 ├── uploads/                  # Fotografias das ocorrências
 └── relatorio-3etapa.pdf      # Relatório final do projeto
 ```
 
 ## 🚀 Como executar
 
-### 1. Pré-requisitos
-- Um servidor local com **Apache, PHP e MySQL/MariaDB**, por exemplo [XAMPP](https://www.apachefriends.org/), WAMP ou LAMP.
+Há duas formas de correr o projeto: com **Docker** (recomendado, não precisa de configurar nada) ou com um servidor local como o **XAMPP**.
 
-### 2. Copiar o projeto
+### 🐳 Opção A — Docker (recomendado)
+
+**Pré-requisito:** [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado e a correr.
+
+Na pasta do projeto, executa:
+
+```bash
+docker compose up -d --build
+```
+
+Isto cria três contentores:
+
+| Serviço | Endereço | Descrição |
+|---|---|---|
+| **App** | <http://localhost:8080> | A aplicação Lisboa+Perto (PHP 8.2 + Apache) |
+| **phpMyAdmin** | <http://localhost:8081> | Gestão da base de dados |
+| **MySQL** | `db:3306` (interno) | Base de dados criada automaticamente |
+
+Na primeira execução, a base de dados é criada a partir do [`BDASW18.sql`](BDASW18.sql) e preenchida com os dados iniciais de [`docker/seed.sql`](docker/seed.sql): estados, categorias, subcategorias de exemplo e um utilizador da CML para o *back-office*:
+
+| Email | Password | Tipo |
+|---|---|---|
+| `cml@lisboaperto.pt` | `admin123` | Funcionário CML |
+
+Para criar uma conta de cidadão, usa a página **Registar**.
+
+Comandos úteis:
+
+```bash
+docker compose logs -f app   # ver os logs da aplicação
+docker compose down          # parar os contentores
+docker compose down -v       # parar e apagar a base de dados (é recriada no próximo "up")
+```
+
+### 🖥️ Opção B — XAMPP / WAMP / LAMP
+
+#### 1. Pré-requisitos
+- Um servidor local com **Apache, PHP 7.0 ou superior e MySQL/MariaDB**, por exemplo [XAMPP](https://www.apachefriends.org/), WAMP ou LAMP.
+
+#### 2. Copiar o projeto
 Clona o repositório para a pasta pública do servidor (`htdocs` no XAMPP, `www` no WAMP):
 
 ```bash
@@ -89,12 +132,13 @@ cd C:/xampp/htdocs
 git clone https://github.com/pedrorosa3/Lisboa-Perto.git
 ```
 
-### 3. Criar a base de dados
+#### 3. Criar a base de dados
 1. Inicia o **Apache** e o **MySQL** no painel do XAMPP.
 2. Abre o phpMyAdmin em <http://localhost/phpmyadmin> e cria uma base de dados (ex.: `lisboaperto`).
 3. Seleciona essa base de dados e importa o ficheiro [`BDASW18.sql`](BDASW18.sql) (separador **Importar**).
+4. Importa também o [`docker/seed.sql`](docker/seed.sql) para ter estados, categorias e o utilizador da CML.
 
-### 4. Configurar a ligação
+#### 4. Configurar a ligação
 As credenciais da base de dados ficam num ficheiro `.env`, que não é enviado para o git. Copia o modelo:
 
 ```bash
@@ -110,7 +154,7 @@ DB_PASS=
 DB_NAME=lisboaperto
 ```
 
-### 5. Abrir no browser
+#### 5. Abrir no browser
 Acede a:
 
 ```

@@ -1,0 +1,5 @@
+.git
+.env
+docker-compose.yml
+Dockerfile
+relatorio-3etapa.*
