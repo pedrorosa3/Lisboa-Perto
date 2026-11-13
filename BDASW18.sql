@@ -13,14 +13,14 @@ CREATE TABLE utilizador(
     email VARCHAR(255),
     passwd VARCHAR(255),
     PRIMARY KEY (id)
-)
+);
 
 CREATE TABLE categorias(
 
     nome VARCHAR(255),
     id int NOT NULL AUTO_INCREMENT,
     PRIMARY KEY (id)
-)
+);
 
 CREATE TABLE subcategorias(
 
@@ -29,13 +29,13 @@ CREATE TABLE subcategorias(
     categoria int,
     PRIMARY KEY(id),
     FOREIGN KEY (categoria) REFERENCES categorias(id)
-) 
+);
 
 CREATE TABLE estado(
     id int NOT NULL AUTO_INCREMENT,
     nome_estado VARCHAR(255),
     PRIMARY KEY (id)
-)
+);
 
 CREATE TABLE ocorrencia(
     id int NOT NULL AUTO_INCREMENT,
@@ -54,7 +54,7 @@ CREATE TABLE ocorrencia(
     FOREIGN KEY (idutilizador) REFERENCES utilizador(id),
     FOREIGN KEY (idestado) REFERENCES estado(id),
     CONSTRAINT chk_urgencia CHECK (urgencia>0 AND urgencia<6)
-)
+);
 
 
 
@@ -70,7 +70,7 @@ CREATE TABLE chat(
     FOREIGN KEY (utilizador2) REFERENCES utilizador(id),
     FOREIGN KEY (ocorrencia) REFERENCES ocorrencia(id)
 
-)
+);
 
 
 
@@ -81,7 +81,7 @@ CREATE TABLE mudancaEstado(
     PRIMARY KEY (ocorrencia,estado),
     FOREIGN KEY (ocorrencia) REFERENCES ocorrencia(id),
     FOREIGN KEY (estado) REFERENCES estado(id)
-)
+);
 
 CREATE TABLE feedback(
     id int NOT NULL AUTO_INCREMENT,
@@ -94,5 +94,5 @@ CREATE TABLE feedback(
     FOREIGN KEY (idutilizador) REFERENCES utilizador(id),
     FOREIGN KEY (idocorrencia) REFERENCES ocorrencia(id),
     CONSTRAINT chk_rating CHECK (rating>0 AND rating<6)
-)
+);
 
